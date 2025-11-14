@@ -1,0 +1,62 @@
+[metadata]
+name = "Coding Agent Benchmark"
+description = "Evaluates coding agents on programming challenges"
+version = "0.1.0"
+author = "AgentX Hackathon Team"
+track = "Coding Agent"
+
+[agents.green]
+name = "CodingAgentEvaluator"
+command = "python scenarios/coding_agent/green_agent.py --host 127.0.0.1 --port 9018"
+url = "http://127.0.0.1:9018"
+role = "evaluator"
+
+[agents.coder]
+name = "CodingPurpleAgent"
+command = "python scenarios/coding_agent/purple_agent.py --host 127.0.0.1 --port 9019"
+url = "http://127.0.0.1:9019"
+role = "coder"
+
+[assessment]
+participants = ["coder"]
+
+[assessment.config]
+task_description = """
+Write a Python function called 'fibonacci' that takes an integer n as input
+and returns the nth Fibonacci number (0-indexed).
+
+The Fibonacci sequence is: 0, 1, 1, 2, 3, 5, 8, 13, 21, ...
+
+Example:
+- fibonacci(0) should return 0
+- fibonacci(1) should return 1
+- fibonacci(6) should return 8
+"""
+
+language = "python"
+time_limit = 60
+
+[[assessment.config.test_cases]]
+input = "0"
+expected = "0"
+description = "Base case: F(0) = 0"
+
+[[assessment.config.test_cases]]
+input = "1"
+expected = "1"
+description = "Base case: F(1) = 1"
+
+[[assessment.config.test_cases]]
+input = "6"
+expected = "8"
+description = "F(6) = 8"
+
+[[assessment.config.test_cases]]
+input = "10"
+expected = "55"
+description = "F(10) = 55"
+
+[[assessment.config.test_cases]]
+input = "15"
+expected = "610"
+description = "F(15) = 610"
