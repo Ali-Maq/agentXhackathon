@@ -88,6 +88,43 @@ uv run python scenarios/your_scenario/purple_agent.py
 uv run agentbeats-run scenarios/your_scenario/scenario.toml
 ```
 
+## 🔬 Implemented Benchmarks
+
+This project includes **4 comprehensive benchmarks** ready for competition submission:
+
+### 1. Coding Agent Benchmark
+**Track**: Coding Agent (Nebius sponsored)
+- Evaluates code generation and test execution
+- Example: Fibonacci challenge with automated testing
+- **Directory**: `scenarios/coding_agent/`
+
+### 2-4. Paper2Agent Research Suite 🆕
+**Track**: Research Agent
+**Based on**: [Paper2Agent methodology](https://github.com/jmiao24/Paper2Agent)
+
+Three integrated benchmarks covering the complete research workflow:
+
+#### 2. Research Code Extraction
+- Tutorial discovery from repositories
+- Function extraction accuracy
+- **Port**: 9020
+- **Directory**: `scenarios/research_code_extraction/`
+
+#### 3. Tutorial Understanding
+- Notebook execution validation
+- Tool generation from tutorials
+- **Port**: 9021
+- **Directory**: `scenarios/tutorial_understanding/`
+
+#### 4. Research Reproducibility
+- Result reproduction with QA (pytest-cov, pylint)
+- Test suite generation
+- MCP server creation
+- **Port**: 9022
+- **Directory**: `scenarios/research_reproducibility/`
+
+**[📖 Full Documentation](docs/PAPER2AGENT_BENCHMARKS.md)**
+
 ## 📂 Project Structure
 
 ```
@@ -98,13 +135,33 @@ agentXhackathon/
 │       ├── models.py         # Pydantic models for agent IO
 │       ├── client.py         # A2A messaging helpers
 │       └── run_scenario.py   # Scenario orchestration
+│
 ├── scenarios/               # Green agent implementations
-│   └── [your_track]/       # Your green agent track
-│       ├── green_agent.py   # Green agent implementation
-│       ├── purple_agent.py  # Test purple agent
-│       └── scenario.toml    # Configuration file
-├── papers/                  # Research papers and references
+│   ├── coding_agent/       # Coding benchmark
+│   │   ├── green_agent.py   # Evaluator
+│   │   ├── purple_agent.py  # LLM-based solver
+│   │   └── scenario.toml    # Configuration
+│   │
+│   ├── research_code_extraction/    # Paper2Agent Benchmark 1
+│   │   ├── green_agent.py          # Code extraction evaluator
+│   │   ├── purple_agent.py         # Research agent (shared)
+│   │   └── scenario.toml
+│   │
+│   ├── tutorial_understanding/      # Paper2Agent Benchmark 2
+│   │   ├── green_agent.py          # Tutorial execution evaluator
+│   │   └── scenario.toml
+│   │
+│   └── research_reproducibility/    # Paper2Agent Benchmark 3
+│       ├── green_agent.py          # Reproducibility evaluator
+│       └── scenario.toml
+│
 ├── docs/                    # Additional documentation
+│   ├── GETTING_STARTED.md        # Setup guide
+│   ├── QUICK_REFERENCE.md        # Command reference
+│   ├── PAPERS_INDEX.md           # Research papers (33+)
+│   └── PAPER2AGENT_BENCHMARKS.md # Paper2Agent suite docs
+│
+├── papers/                  # Research papers and references
 ├── tests/                   # Unit and integration tests
 ├── pyproject.toml          # Project dependencies
 ├── .env.example            # Environment template

@@ -1,0 +1,76 @@
+[metadata]
+name = "Research Reproducibility Benchmark"
+description = "Evaluates agents on reproducing research results with quality assurance - Based on Paper2Agent"
+version = "1.0.0"
+author = "AgentX Hackathon Team"
+track = "Research Agent"
+methodology = "Paper2Agent QA pipeline with pytest-cov and pylint"
+
+[agents.green]
+name = "ResearchReproducibilityEvaluator"
+command = "python scenarios/research_reproducibility/green_agent.py --host 127.0.0.1 --port 9022"
+url = "http://127.0.0.1:9022"
+role = "evaluator"
+
+[agents.researcher]
+name = "ResearchPurpleAgent"
+command = "python scenarios/research_reproducibility/purple_agent.py --host 127.0.0.1 --port 9023"
+url = "http://127.0.0.1:9023"
+role = "researcher"
+
+[assessment]
+participants = ["researcher"]
+
+[assessment.config]
+research_code = """
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, f1_score
+
+def load_dataset(path='data.csv'):
+    '''Load and return dataset'''
+    import pandas as pd
+    return pd.read_csv(path)
+
+def train_classifier(X, y, n_estimators=100, random_state=42):
+    '''Train a random forest classifier'''
+    clf = RandomForestClassifier(
+        n_estimators=n_estimators,
+        random_state=random_state
+    )
+    clf.fit(X, y)
+    return clf
+
+def evaluate_model(model, X_test, y_test):
+    '''Evaluate model performance'''
+    predictions = model.predict(X_test)
+    return {
+        'accuracy': accuracy_score(y_test, predictions),
+        'f1_score': f1_score(y_test, predictions, average='weighted')
+    }
+
+# Main experiment from paper
+def run_experiment():
+    data = load_dataset()
+    X = data.drop('target', axis=1)
+    y = data['target']
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+
+    model = train_classifier(X_train, y_train)
+    results = evaluate_model(model, X_test, y_test)
+    return results
+"""
+
+# Results reported in the paper
+[assessment.config.paper_results]
+accuracy = 0.945
+f1_score = 0.932
+model_type = "RandomForest"
+
+# Quality targets (Paper2Agent standards)
+target_coverage = 85
+target_pylint_score = 8.0

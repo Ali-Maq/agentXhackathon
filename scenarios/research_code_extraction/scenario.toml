@@ -1,0 +1,59 @@
+[metadata]
+name = "Research Code Extraction Benchmark"
+description = "Evaluates agents on extracting code from research repositories - Based on Paper2Agent"
+version = "1.0.0"
+author = "AgentX Hackathon Team"
+track = "Research Agent"
+methodology = "Paper2Agent tutorial discovery and extraction"
+
+[agents.green]
+name = "ResearchCodeExtractionEvaluator"
+command = "python scenarios/research_code_extraction/green_agent.py --host 127.0.0.1 --port 9020"
+url = "http://127.0.0.1:9020"
+role = "evaluator"
+
+[agents.researcher]
+name = "ResearchPurpleAgent"
+command = "python scenarios/research_code_extraction/purple_agent.py --host 127.0.0.1 --port 9023"
+url = "http://127.0.0.1:9023"
+role = "researcher"
+
+[assessment]
+participants = ["researcher"]
+
+[assessment.config]
+repository_url = "https://github.com/example/research-repo"
+time_limit = 600
+
+# Expected tutorials to discover
+expected_tutorials = [
+    "tutorial_01_introduction.ipynb",
+    "tutorial_02_advanced.ipynb",
+    "examples/quickstart.ipynb"
+]
+
+# Expected functions to extract
+[[assessment.config.expected_functions]]
+name = "load_data"
+parameters = ["filepath", "format"]
+return_type = "DataFrame"
+
+[[assessment.config.expected_functions]]
+name = "preprocess"
+parameters = ["data", "method"]
+return_type = "array"
+
+[[assessment.config.expected_functions]]
+name = "train_model"
+parameters = ["X", "y", "config"]
+return_type = "Model"
+
+[[assessment.config.expected_functions]]
+name = "evaluate"
+parameters = ["model", "test_data"]
+return_type = "dict"
+
+[[assessment.config.expected_functions]]
+name = "visualize_results"
+parameters = ["results", "output_path"]
+return_type = "None"

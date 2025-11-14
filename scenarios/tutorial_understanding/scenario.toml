@@ -1,0 +1,68 @@
+[metadata]
+name = "Tutorial Understanding Benchmark"
+description = "Evaluates agents on understanding and executing research tutorials - Based on Paper2Agent"
+version = "1.0.0"
+author = "AgentX Hackathon Team"
+track = "Research Agent"
+methodology = "Paper2Agent notebook execution and tool generation"
+
+[agents.green]
+name = "TutorialUnderstandingEvaluator"
+command = "python scenarios/tutorial_understanding/green_agent.py --host 127.0.0.1 --port 9021"
+url = "http://127.0.0.1:9021"
+role = "evaluator"
+
+[agents.researcher]
+name = "ResearchPurpleAgent"
+command = "python scenarios/tutorial_understanding/purple_agent.py --host 127.0.0.1 --port 9023"
+url = "http://127.0.0.1:9023"
+role = "researcher"
+
+[assessment]
+participants = ["researcher"]
+
+[assessment.config]
+notebook_content = """
+# Research Tutorial: Data Analysis
+
+## Import libraries
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+## Load data
+data = pd.read_csv('dataset.csv')
+print(f"Loaded {len(data)} samples")
+
+## Preprocessing
+def preprocess(df):
+    df_clean = df.dropna()
+    df_normalized = (df_clean - df_clean.mean()) / df_clean.std()
+    return df_normalized
+
+processed_data = preprocess(data)
+
+## Analysis
+results = processed_data.describe()
+print(results)
+
+## Visualization
+plt.figure(figsize=(10, 6))
+plt.hist(processed_data['feature1'], bins=50)
+plt.title('Feature Distribution')
+plt.savefig('distribution.png')
+"""
+
+allow_errors = true
+
+# Expected outputs from cells
+[assessment.config.expected_outputs]
+"1" = "Loaded 1000 samples"
+"4" = "Feature Distribution"
+
+# Expected tools to generate
+expected_tools = [
+    "preprocess",
+    "load_data",
+    "visualize_distribution"
+]
